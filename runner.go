@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"net/http"
+	"log"
 )
 
 type Payload struct {
@@ -29,40 +31,57 @@ type Result struct {
 }
 
 func main() {
-	payload := &Payload{}
-	err := json.NewDecoder(os.Stdin).Decode(payload)
+	http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
+		var errOccured bool = false
 
-	if err != nil {
-		exitF("Failed to parse input json (%s)\n", err.Error())
-	}
+		// get input data
+		body, _ := ioutil.ReadAll(r.Body)
+		bodyData := string(body)
+		log.Println(bodyData)
 
-	// Ensure that we have at least one file
-	if len(payload.Files) == 0 {
-		exitF("No files given\n")
-	}
+		payload := &Payload{}
+		err := json.Unmarshal([]byte(bodyData), payload)
 
-	// Check if we support given language
-	if !language.IsSupported(payload.Language) {
-		exitF("Language '%s' is not supported\n", payload.Language)
-	}
+		if err != nil {
+			log.Println("Failed to parse input json (%s)\n", err.Error())
+			errOccured = true
+		}
 
-	// Write files to disk
-	filepaths, err := writeFiles(payload.Files)
-	if err != nil {
-		exitF("Failed to write file to disk (%s)", err.Error())
-	}
+		// Ensure that we have at least one file
+		if !errOccured && len(payload.Files) == 0 {
+			log.Println("No files given\n")
+			errOccured = true
+		}
 
-	var stdout, stderr string
+		// Check if we support given language
+		if !errOccured && !language.IsSupported(payload.Language) {
+			log.Println("Language '%s' is not supported\n", payload.Language)
+			errOccured = true
+		}
 
-	// Execute the given command or run the code with
-	// the language runner if no command is given
-	if payload.Command == "" {
-		stdout, stderr, err = language.Run(payload.Language, filepaths, payload.Stdin)
-	} else {
-		workDir := filepath.Dir(filepaths[0])
-		stdout, stderr, err = cmd.RunBashStdin(workDir, payload.Command, payload.Stdin)
-	}
-	printResult(stdout, stderr, err)
+		// Write files to disk
+		filepaths, err := writeFiles(payload.Files)
+		if !errOccured && err != nil {
+			log.Println("Failed to write file to disk (%s)", err.Error())
+			errOccured = true
+		}
+
+		var stdout, stderr string
+
+		if (!errOccured) {
+			if payload.Command == "" {
+				stdout, stderr, err = language.Run(payload.Language, filepaths, payload.Stdin)
+			} else {
+				workDir := filepath.Dir(filepaths[0])
+				stdout, stderr, err = cmd.RunBashStdin(workDir, payload.Command, payload.Stdin)
+			}
+			w.Header().Set("Content-Type", "application/json")
+    		w.WriteHeader(http.StatusCreated)
+			writeResult(stdout, stderr, err, w)
+		}
+	})
+
+	log.Fatal(http.ListenAndServe(":8085", nil))
 }
 
 // Writes files to disk, returns list of absolute filepaths
@@ -112,13 +131,15 @@ func exitF(format string, a ...interface{}) {
 	os.Exit(1)
 }
 
-func printResult(stdout, stderr string, err error) {
+func writeResult(stdout, stderr string, err error, writer http.ResponseWriter) {
 	result := &Result{
 		Stdout: stdout,
 		Stderr: stderr,
 		Error:  errToStr(err),
 	}
-	json.NewEncoder(os.Stdout).Encode(result)
+    json.NewEncoder(os.Stdout).Encode(result)
+    responseJSON, err := json.Marshal(result)
+    writer.Write(responseJSON)
 }
 
 func errToStr(err error) string {
