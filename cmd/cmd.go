@@ -39,7 +39,7 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 		err := cmd.Process.Kill()
 		if err != nil {
 			log.Println("2. failed to kill process (%s)\n", err.Error())
-		}
+		} 
 		log.Println("TIMEOUT: process killed as timeout reached")
 	case err := <-done:
 		if err != nil {

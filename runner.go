@@ -76,7 +76,7 @@ func main() {
 				stdout, stderr, err = cmd.RunBashStdin(workDir, payload.Command, payload.Stdin)
 			}
 			w.Header().Set("Content-Type", "application/json")
-    		w.WriteHeader(http.StatusCreated)
+			w.WriteHeader(http.StatusCreated)
 			writeResult(stdout, stderr, err, w)
 		}
 	})
@@ -142,9 +142,9 @@ func writeResult(stdout, stderr string, err error, writer http.ResponseWriter) {
 		Stderr: stderr,
 		Error:  errToStr(err),
 	}
-    json.NewEncoder(os.Stdout).Encode(result)
-    responseJSON, err := json.Marshal(result)
-    writer.Write(responseJSON)
+	json.NewEncoder(os.Stdout).Encode(result)
+	responseJSON, err := json.Marshal(result)
+	writer.Write(responseJSON)
 }
 
 func errToStr(err error) string {
