@@ -1,6 +1,4 @@
-FROM node:latest
 FROM python:2
-FROM ruby:latest
 
 # specific libs for python
 RUN pip install \
