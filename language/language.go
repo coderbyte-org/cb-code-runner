@@ -2,12 +2,14 @@ package language
 
 import (
 	"github.com/danielborowski/cb-code-runner/language/javascript"
+	"github.com/danielborowski/cb-code-runner/language/python"
 )
 
 type runFn func([]string, string) (string, string, error)
 
 var languages = map[string]runFn{
-	"javascript":   javascript.Run,
+	"javascript":	javascript.Run,
+	"python":		python.Run,
 }
 
 func IsSupported(lang string) bool {

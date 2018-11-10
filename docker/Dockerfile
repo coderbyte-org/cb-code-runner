@@ -1,4 +1,14 @@
 FROM node:latest
+FROM python:2
+
+# specific libs for python
+RUN pip install \
+    cachetools \
+    nose \
+    numpy \
+    python-dateutil \
+    pytz \
+    six
 
 # add user
 RUN groupadd cb-code-runner

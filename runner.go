@@ -81,7 +81,12 @@ func main() {
 		}
 	})
 
-	log.Fatal(http.ListenAndServe(":8085", nil))
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
+	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
 
 // Writes files to disk, returns list of absolute filepaths
