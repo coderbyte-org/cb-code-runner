@@ -1,7 +1,7 @@
 package javascript
 
 import (
-	"github.com/danielborowski/cb-code-runner-2/cmd"
+	"github.com/danielborowski/cb-code-runner/cmd"
 	"path/filepath"
 )
 

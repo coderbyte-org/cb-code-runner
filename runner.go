@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/danielborowski/cb-code-runner-2/cmd"
-	"github.com/danielborowski/cb-code-runner-2/language"
+	"github.com/danielborowski/cb-code-runner/cmd"
+	"github.com/danielborowski/cb-code-runner/language"
 	"io/ioutil"
 	"os"
 	"path/filepath"

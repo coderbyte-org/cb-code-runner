@@ -1,7 +1,7 @@
 package language
 
 import (
-	"github.com/danielborowski/cb-code-runner-2/language/javascript"
+	"github.com/danielborowski/cb-code-runner/language/javascript"
 )
 
 type runFn func([]string, string) (string, string, error)
