@@ -1,6 +1,6 @@
 cb-code-runner
 ================
-Clone of [glot.io](https://github.com/prasmussen/glot).
+Clone of [glot.io](https://github.com/prasmussen/glot). Modified to combine server + code runner into one application.
 
 ## Overview
-Command line application that reads json payload (of user code) from stdin and writes results to stdout.
+Go application that reads json payload from request body (which contains user code), executes it, and return json output.
