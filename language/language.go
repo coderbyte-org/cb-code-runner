@@ -9,9 +9,9 @@ import (
 type runFn func([]string, string) (string, string, error)
 
 var languages = map[string]runFn{
-	"javascript":	javascript.Run,
-	"python":		python.Run,
-	"ruby":			ruby.Run,
+	"javascript":   javascript.Run,
+	"python":       python.Run,
+	"ruby":         ruby.Run,
 }
 
 func IsSupported(lang string) bool {
