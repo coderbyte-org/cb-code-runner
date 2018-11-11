@@ -5,6 +5,19 @@ Clone of [glot.io](https://github.com/prasmussen/glot). Modified to combine serv
 ## Overview
 Application that reads json payload from request body, executes the code, and return json output.
 
+## Testing/Building
+To test the Go code execution program, first install dependencies with `go get -d ./...` then start the server:
+
+```
+PORT=8085 go run runner.go
+```
+
+To build the Go binary, run:
+
+```
+bash build_linux.sh
+```
+
 ## Examples
 The input JSON payload expects two parameters: `language` and a `files` array with each object in `files` containing a file `name` and code `content`.
 
