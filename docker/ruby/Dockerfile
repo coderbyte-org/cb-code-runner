@@ -1,13 +1,5 @@
 FROM ruby:latest
 
-# specific libs for python
-RUN pip install \
-    cachetools \
-    nose \
-    python-dateutil \
-    pytz \
-    six
-
 # add user
 RUN groupadd cb-code-runner
 RUN useradd -m -d /home/cb-code-runner -g cb-code-runner -s /bin/bash cb-code-runner

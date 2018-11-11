@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/danielborowski/cb-code-runner/cmd"
 	"github.com/danielborowski/cb-code-runner/language"
 	"io/ioutil"
@@ -129,11 +128,6 @@ func writeFile(basePath string, file *InMemoryFile) (string, error) {
 
 	// Return absolute path to file
 	return absPath, nil
-}
-
-func exitF(format string, a ...interface{}) {
-	fmt.Fprintf(os.Stderr, format, a...)
-	os.Exit(1)
 }
 
 func writeResult(stdout, stderr string, err error, writer http.ResponseWriter) {

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"log"
 	"time"
+	"errors"
 )
 
 func Run(workDir string, args ...string) (string, string, error) {
@@ -15,6 +16,7 @@ func Run(workDir string, args ...string) (string, string, error) {
 func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
+	var timeoutReached bool = false
 
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Dir = workDir
@@ -40,11 +42,16 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 		if err != nil {
 			log.Println("2. failed to kill process (%s)\n", err.Error())
 		} 
-		log.Println("TIMEOUT: process killed as timeout reached")
+		timeoutReached = true
+		log.Println("ERROR: process killed as timeout reached")
 	case err := <-done:
 		if err != nil {
 			log.Println("3. process finished with error (%s)\n", err.Error())
 		}
+	}
+
+	if timeoutReached {
+		err = errors.New("process killed as timeout reached")
 	}
 
 	return stdout.String(), stderr.String(), err
