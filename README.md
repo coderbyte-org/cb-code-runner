@@ -46,7 +46,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 }
 ```
 
-## Language Supported on Coderbyte
+## Languages Supported
 * JavaScript
 * Python
 * Ruby
