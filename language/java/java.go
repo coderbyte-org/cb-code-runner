@@ -10,7 +10,7 @@ func Run(files []string, stdin string) (string, string, error) {
 	fname := filepath.Base(files[0])
 
 	stdout, stderr, err := cmd.Run(workDir, "javac", fname)
-	if err != nil {
+	if err != nil || stderr != "" {
 		return stdout, stderr, err
 	}
 

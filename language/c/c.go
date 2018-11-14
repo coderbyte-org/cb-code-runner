@@ -13,7 +13,7 @@ func Run(files []string, stdin string) (string, string, error) {
 	sourceFiles := util.FilterByExtension(files, "c")
 	args := append([]string{"clang", "-o", binName, "-lm"}, sourceFiles...)
 	stdout, stderr, err := cmd.Run(workDir, args...)
-	if err != nil {
+	if err != nil || stderr != "" {
 		return stdout, stderr, err
 	}
 

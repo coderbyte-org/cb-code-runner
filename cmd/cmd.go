@@ -23,11 +23,11 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 	cmd.Stdin = strings.NewReader(stdin)
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
-	err := cmd.Start();
+	err := cmd.Start()
 
 	// error starting process
 	if err != nil {
-		log.Println("1. process fail (%s)\n", err.Error())
+		log.Println("1. process fail\n", err.Error())
 	}
 
 	// do not exceed timeout
@@ -40,13 +40,13 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 	case <-time.After(3 * time.Second):
 		err := cmd.Process.Kill()
 		if err != nil {
-			log.Println("2. failed to kill process (%s)\n", err.Error())
+			log.Println("2. failed to kill process\n", err.Error())
 		} 
 		timeoutReached = true
 		log.Println("ERROR: process killed as timeout reached")
 	case err := <-done:
 		if err != nil {
-			log.Println("3. process finished with error (%s)\n", err.Error())
+			log.Println("3. process finished with error\n", err.Error())
 		}
 	}
 
