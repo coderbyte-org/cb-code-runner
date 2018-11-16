@@ -16,6 +16,7 @@ func Run(workDir string, args ...string) (string, string, error) {
 func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
+	var stdoutReturnString string = ""
 	var timeoutReached bool = false
 
 	cmd := exec.Command(args[0], args[1:]...)
@@ -50,11 +51,16 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 		}
 	}
 
+	// if timeout occured, prevent stdout from returning
 	if timeoutReached {
+		stdoutReturnString = "Error."
 		err = errors.New("process killed as timeout reached")
+	} else {
+		// do not return a stdout string longer than N characters
+		stdoutReturnString = stdout.String()[0:1000]
 	}
 
-	return stdout.String(), stderr.String(), err
+	return stdoutReturnString, stderr.String(), err
 }
 
 func RunBash(workDir, command string) (string, string, error) {
