@@ -53,11 +53,14 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 
 	// if timeout occured, prevent stdout from returning
 	if timeoutReached {
-		stdoutReturnString = "Error."
+		stdoutReturnString = ""
 		err = errors.New("process killed as timeout reached")
 	} else {
 		// do not return a stdout string longer than N characters
-		stdoutReturnString = stdout.String()[0:1000]
+		stdoutReturnString = stdout.String()
+		if (len(stdoutReturnString) > 1001) {
+			stdoutReturnString = stdoutReturnString[0:1000]
+		} 
 	}
 
 	return stdoutReturnString, stderr.String(), err
