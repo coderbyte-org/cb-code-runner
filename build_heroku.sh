@@ -1,1 +1,1 @@
-go build -o runner -v 
+go build -o bin/runner -v 
