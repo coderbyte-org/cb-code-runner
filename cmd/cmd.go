@@ -10,7 +10,7 @@ import (
 )
 
 func Run(workDir string, args ...string) (string, string, error) {
-	return RunStdin(workDir, "", args...)
+	return RunStdin(workDir, "", args...) 
 }
 
 func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
