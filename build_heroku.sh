@@ -1,1 +1,1 @@
-go build -o bin/cb-code-runner -v 
+GOOS=linux GOARCH=amd64 go build -o bin/cb-code-runner -v 
