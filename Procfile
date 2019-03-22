@@ -1,1 +1,1 @@
-web: runner
+web: ./runner
