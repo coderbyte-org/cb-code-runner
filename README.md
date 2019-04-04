@@ -18,7 +18,7 @@ curl -X POST -d "{\"language\": \"javascript\",\"files\": [{\"name\": \"main.js\
 To build the Go binary, run:
 
 ```
-bash build_linux.sh
+bash build.sh
 ```
 
 ## Examples
