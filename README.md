@@ -47,14 +47,14 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 ```
 
 ## Languages Supported
-* JavaScript
-* Python
-* Ruby
-* PHP
-* Java
-* Swift
-* Go
+* C
 * C++
 * C#
-* C
+* Go
+* Java
+* JavaScript
 * Kotlin
+* PHP
+* Python
+* Ruby
+* Swift
