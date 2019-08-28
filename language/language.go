@@ -11,6 +11,7 @@ import (
 	"github.com/danielborowski/cb-code-runner/language/cpp"
 	"github.com/danielborowski/cb-code-runner/language/csharp"
 	"github.com/danielborowski/cb-code-runner/language/c"
+	"github.com/danielborowski/cb-code-runner/language/kotlin"
 )
 
 type runFn func([]string, string) (string, string, error)
@@ -26,6 +27,7 @@ var languages = map[string]runFn{
 	"cpp":          cpp.Run,
 	"csharp":       csharp.Run,
 	"c":            c.Run,
+	"kotlin":       kotlin.Run,
 }
 
 func IsSupported(lang string) bool {
