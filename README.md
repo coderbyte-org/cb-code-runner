@@ -31,7 +31,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
   "files": [
     {
       "name": "main.js",
-      "content": "console.log(2+2+2);"
+      "content": "console.log(2+2);"
     }
   ]
 }
@@ -57,3 +57,4 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 * C++
 * C#
 * C
+* Kotlin
