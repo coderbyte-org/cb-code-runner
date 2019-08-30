@@ -40,7 +40,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 ##### Output
 ```javascript
 {
-  "stdout": "6\n",
+  "stdout": "4\n",
   "stderr": "",
   "error": ""
 }
