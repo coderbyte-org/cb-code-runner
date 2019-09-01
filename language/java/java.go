@@ -1,7 +1,7 @@
 package java
 
 import (
-	"github.com/danielborowski/cb-code-runner/cmd"
+	"github.com/coderbyte-org/cb-code-runner/cmd"
 	"path/filepath"
 )
 

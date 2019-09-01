@@ -1,17 +1,17 @@
 package language
 
 import (
-	"github.com/danielborowski/cb-code-runner/language/javascript"
-	"github.com/danielborowski/cb-code-runner/language/python"
-	"github.com/danielborowski/cb-code-runner/language/ruby"
-	"github.com/danielborowski/cb-code-runner/language/php"
-	"github.com/danielborowski/cb-code-runner/language/java"
-	"github.com/danielborowski/cb-code-runner/language/swift"
-	"github.com/danielborowski/cb-code-runner/language/golang"
-	"github.com/danielborowski/cb-code-runner/language/cpp"
-	"github.com/danielborowski/cb-code-runner/language/csharp"
-	"github.com/danielborowski/cb-code-runner/language/c"
-	"github.com/danielborowski/cb-code-runner/language/kotlin"
+	"github.com/coderbyte-org/cb-code-runner/language/javascript"
+	"github.com/coderbyte-org/cb-code-runner/language/python"
+	"github.com/coderbyte-org/cb-code-runner/language/ruby"
+	"github.com/coderbyte-org/cb-code-runner/language/php"
+	"github.com/coderbyte-org/cb-code-runner/language/java"
+	"github.com/coderbyte-org/cb-code-runner/language/swift"
+	"github.com/coderbyte-org/cb-code-runner/language/golang"
+	"github.com/coderbyte-org/cb-code-runner/language/cpp"
+	"github.com/coderbyte-org/cb-code-runner/language/csharp"
+	"github.com/coderbyte-org/cb-code-runner/language/c"
+	"github.com/coderbyte-org/cb-code-runner/language/kotlin"
 )
 
 type runFn func([]string, string) (string, string, error)

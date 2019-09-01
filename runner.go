@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/danielborowski/cb-code-runner/cmd"
-	"github.com/danielborowski/cb-code-runner/language"
+	"/cb-code-runner/cmd"
+	"github.com/coderbyte-org/cb-code-runner/language"
 	"io/ioutil"
 	"os"
 	"path/filepath"

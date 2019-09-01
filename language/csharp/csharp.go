@@ -1,8 +1,8 @@
 package csharp
 
 import (
-	"github.com/danielborowski/cb-code-runner/cmd"
-	"github.com/danielborowski/cb-code-runner/util"
+	"github.com/coderbyte-org/cb-code-runner/cmd"
+	"github.com/coderbyte-org/cb-code-runner/util"
 	"path/filepath"
 )
 
