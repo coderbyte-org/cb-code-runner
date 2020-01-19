@@ -58,3 +58,4 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 * Python
 * Ruby
 * Swift
+* TypeScript
