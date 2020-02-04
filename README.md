@@ -50,6 +50,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 * C
 * C++
 * C#
+* Clojure
 * Go
 * Java
 * JavaScript

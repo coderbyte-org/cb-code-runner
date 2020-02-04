@@ -13,6 +13,7 @@ import (
 	"github.com/coderbyte-org/cb-code-runner/language/c"
 	"github.com/coderbyte-org/cb-code-runner/language/kotlin"
 	"github.com/coderbyte-org/cb-code-runner/language/typescript"
+	"github.com/coderbyte-org/cb-code-runner/language/clojure"
 )
 
 type runFn func([]string, string) (string, string, error)
@@ -30,6 +31,7 @@ var languages = map[string]runFn{
 	"c":            c.Run,
 	"kotlin":       kotlin.Run,
 	"typescript":   typescript.Run,
+	"clojure":      clojure.Run,
 }
 
 func IsSupported(lang string) bool {
