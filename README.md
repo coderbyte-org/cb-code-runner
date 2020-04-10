@@ -47,6 +47,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 ```
 
 ## Languages Supported
+* Bash
 * C
 * C++
 * C#
