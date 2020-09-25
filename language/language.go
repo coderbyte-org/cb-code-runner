@@ -17,6 +17,7 @@ import (
 	"github.com/coderbyte-org/cb-code-runner/language/bash"
 	"github.com/coderbyte-org/cb-code-runner/language/elixir"
 	"github.com/coderbyte-org/cb-code-runner/language/scala"
+	"github.com/coderbyte-org/cb-code-runner/language/rust"
 )
 
 type runFn func([]string, string) (string, string, error)
@@ -38,6 +39,7 @@ var languages = map[string]runFn{
 	"bash":         bash.Run,
 	"elixir":       elixir.Run,
 	"scala":        scala.Run,
+	"rust":         rust.Run,
 }
 
 func IsSupported(lang string) bool {
