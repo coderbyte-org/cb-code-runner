@@ -60,6 +60,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 * PHP
 * Python
 * Ruby
+* Rust
 * Scala
 * Swift
 * TypeScript
