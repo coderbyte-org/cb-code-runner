@@ -11,11 +11,11 @@ func Run(files []string, stdin string) (string, string, error) {
 	fname := filepath.Base(files[0])
 
 	stdout, stderr, err := cmd.Run(workDir, "kotlinc", fname)
-	if err != nil {
-		return stdout, stderr, err
-	}
 
-	return cmd.RunStdin(workDir, stdin, "kotlin", className(fname))
+	// remove java warning
+	stderr = strings.Replace(stderr, "Java HotSpot(TM) 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.\n", "", -1)
+
+	return stdout, stderr, err
 }
 
 func className(fname string) string {
