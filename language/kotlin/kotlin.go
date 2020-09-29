@@ -15,7 +15,11 @@ func Run(files []string, stdin string) (string, string, error) {
 	// remove java warning
 	stderr = strings.Replace(stderr, "Java HotSpot(TM) 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.\n", "", -1)
 
-	return stdout, stderr, err
+	if err != nil || stderr != "" {
+		return stdout, stderr, err
+	}
+
+	return cmd.RunStdin(workDir, stdin, "kotlin", className(fname))
 }
 
 func className(fname string) string {
