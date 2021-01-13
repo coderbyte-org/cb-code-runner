@@ -12,7 +12,7 @@ func Run(files []string, stdin string) (string, string, error) {
 
 	// Find all typescript files and build compile command
 	sourceFiles := util.FilterByExtension(files, "ts")
-	args := append([]string{"tsc", "-out", jsName}, sourceFiles...)
+	args := append([]string{"tsc", "-incremental", "-skipLibCheck", "-noLib", "-outFile", jsName}, sourceFiles...)
 
 	// Compile to javascript
 	stdout, stderr, err := cmd.Run(workDir, args...)
