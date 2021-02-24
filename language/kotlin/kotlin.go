@@ -6,17 +6,17 @@ import (
 	"strings"
 )
 
-func Run(files []string, stdin string) (string, string, error) {
+func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
 	fname := filepath.Base(files[0])
 
-	stdout, stderr, err := cmd.Run(workDir, "kotlinc", fname, "-progressive", "-no-reflect")
+	stdout, stderr, err, duration := cmd.Run(workDir, "kotlinc", fname, "-progressive", "-no-reflect")
 
 	// remove java warning
 	stderr = strings.Replace(stderr, "Java HotSpot(TM) 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.\n", "", -1)
 
 	if err != nil || stderr != "" {
-		return stdout, stderr, err
+		return stdout, stderr, err, duration
 	}
 
 	return cmd.RunStdin(workDir, stdin, "kotlin", className(fname))

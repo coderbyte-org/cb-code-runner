@@ -20,7 +20,7 @@ import (
 	"github.com/coderbyte-org/cb-code-runner/language/rust"
 )
 
-type runFn func([]string, string) (string, string, error)
+type runFn func([]string, string) (string, string, error, string)
 
 var languages = map[string]runFn{
 	"javascript":   javascript.Run,
@@ -47,6 +47,6 @@ func IsSupported(lang string) bool {
 	return supported
 }
 
-func Run(lang string, files []string, stdin string) (string, string, error) {
+func Run(lang string, files []string, stdin string) (string, string, error, string) {
 	return languages[lang](files, stdin)
 }

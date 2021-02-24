@@ -9,15 +9,18 @@ import (
 	"errors"
 )
 
-func Run(workDir string, args ...string) (string, string, error) {
+func Run(workDir string, args ...string) (string, string, error, string) {
 	return RunStdin(workDir, "", args...) 
 }
 
-func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
+func RunStdin(workDir, stdin string, args ...string) (string, string, error, string) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
 	var stdoutReturnString string = ""
 	var timeoutReached bool = false
+
+	// measure execution time
+	start := time.Now()
 
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Dir = workDir
@@ -51,6 +54,10 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 		}
 	}
 
+	// format example: 186.992733ms
+	duration := time.Since(start)
+	durationString := duration.String()
+
 	// if timeout occured, prevent stdout from returning
 	if timeoutReached {
 		stdoutReturnString = ""
@@ -63,13 +70,13 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error) {
 		} 
 	}
 
-	return stdoutReturnString, stderr.String(), err
+	return stdoutReturnString, stderr.String(), err, durationString
 }
 
-func RunBash(workDir, command string) (string, string, error) {
+func RunBash(workDir, command string) (string, string, error, string) {
 	return Run(workDir, "bash", "-c", command)
 }
 
-func RunBashStdin(workDir, command, stdin string) (string, string, error) {
+func RunBashStdin(workDir, command, stdin string) (string, string, error, string) {
 	return RunStdin(workDir, stdin, "bash", "-c", command)
 }

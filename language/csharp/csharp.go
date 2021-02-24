@@ -6,15 +6,15 @@ import (
 	"path/filepath"
 )
 
-func Run(files []string, stdin string) (string, string, error) {
+func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
 	binName := "a.exe"
 
 	sourceFiles := util.FilterByExtension(files, "cs")
 	args := append([]string{"mcs", "-out:" + binName}, sourceFiles...)
-	stdout, stderr, err := cmd.Run(workDir, args...)
+	stdout, stderr, err, duration := cmd.Run(workDir, args...)
 	if err != nil || stderr != "" {
-		return stdout, stderr, err
+		return stdout, stderr, err, duration
 	}
 
 	binPath := filepath.Join(workDir, binName)

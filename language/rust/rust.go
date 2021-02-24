@@ -5,13 +5,13 @@ import (
 	"path/filepath"
 )
 
-func Run(files []string, stdin string) (string, string, error) {
+func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
 	binName := "a.out"
 
-	stdout, stderr, err := cmd.Run(workDir, "rustc", "-o", binName, files[0])
+	stdout, stderr, err, duration := cmd.Run(workDir, "rustc", "-o", binName, files[0])
 	if err != nil {
-		return stdout, stderr, err
+		return stdout, stderr, err, duration
 	}
 
 	binPath := filepath.Join(workDir, binName)

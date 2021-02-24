@@ -27,6 +27,7 @@ type Result struct {
 	Stdout string `json:"stdout"`
 	Stderr string `json:"stderr"`
 	Error  string `json:"error"`
+	Duration string `json:"duration"`
 }
 
 func main() {
@@ -65,18 +66,18 @@ func main() {
 			errOccured = true
 		}
 
-		var stdout, stderr string
+		var stdout, stderr, duration string
 
 		if (!errOccured) {
 			if payload.Command == "" {
-				stdout, stderr, err = language.Run(payload.Language, filepaths, payload.Stdin)
+				stdout, stderr, err, duration = language.Run(payload.Language, filepaths, payload.Stdin)
 			} else {
 				workDir := filepath.Dir(filepaths[0])
-				stdout, stderr, err = cmd.RunBashStdin(workDir, payload.Command, payload.Stdin)
+				stdout, stderr, err, duration = cmd.RunBashStdin(workDir, payload.Command, payload.Stdin)
 			}
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
-			writeResult(stdout, stderr, err, w)
+			writeResult(stdout, stderr, err, duration, w)
 		}
 	})
 
@@ -130,11 +131,12 @@ func writeFile(basePath string, file *InMemoryFile) (string, error) {
 	return absPath, nil
 }
 
-func writeResult(stdout, stderr string, err error, writer http.ResponseWriter) {
+func writeResult(stdout, stderr string, err error, duration string, writer http.ResponseWriter) {
 	result := &Result{
 		Stdout: stdout,
 		Stderr: stderr,
 		Error:  errToStr(err),
+		Duration: duration,
 	}
 	json.NewEncoder(os.Stdout).Encode(result)
 	responseJSON, err := json.Marshal(result)
