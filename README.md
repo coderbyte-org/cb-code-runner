@@ -42,7 +42,8 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
 {
   "stdout": "4\n",
   "stderr": "",
-  "error": ""
+  "error": "",
+  "duration": "37.099149ms"
 }
 ```
 
