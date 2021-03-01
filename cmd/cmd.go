@@ -7,6 +7,7 @@ import (
 	"log"
 	"time"
 	"errors"
+	"strconv"
 )
 
 func Run(workDir string, args ...string) (string, string, error, string) {
@@ -54,9 +55,10 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 		}
 	}
 
-	// format example: 186.992733ms
+	// format example: 186
 	duration := time.Since(start)
-	durationString := duration.String()
+	milliseconds := duration.Milliseconds()
+	durationString := strconv.FormatInt(milliseconds, 10)
 
 	// if timeout occured, prevent stdout from returning
 	if timeoutReached {
