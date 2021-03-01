@@ -43,7 +43,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
   "stdout": "4\n",
   "stderr": "",
   "error": "",
-  "duration": "37.099149ms"
+  "duration": "37" // milliseconds
 }
 ```
 
