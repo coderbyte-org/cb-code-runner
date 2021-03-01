@@ -24,6 +24,8 @@ bash build.sh
 ## Examples
 The input JSON payload expects two parameters: `language` and a `files` array with each object in `files` containing a file `name` and code `content`.
 
+The output will be a JSON payload with the following parameters: `stdout`, `stderr`, `error`, and `duration` which is the execution time in milliseconds.
+
 ##### Input
 ```javascript
 {
@@ -43,7 +45,7 @@ The input JSON payload expects two parameters: `language` and a `files` array wi
   "stdout": "4\n",
   "stderr": "",
   "error": "",
-  "duration": "37" // milliseconds
+  "duration": "37"
 }
 ```
 
