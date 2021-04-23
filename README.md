@@ -63,6 +63,7 @@ The output will be a JSON payload with the following parameters: `stdout`, `stde
 * Kotlin
 * PHP
 * Python
+* R
 * Ruby
 * Rust
 * Scala
