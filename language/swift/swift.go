@@ -11,7 +11,7 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	binName := "a.out"
 
 	sourceFiles := util.FilterByExtension(files, "swift")
-	args := append([]string{"swiftc", "-o", binName}, sourceFiles...)
+	args := append([]string{"swiftc", "-suppress-warnings", "-o", binName}, sourceFiles...)
 	stdout, stderr, err, duration := cmd.Run(workDir, args...)
 	if err != nil || stderr != "" {
 		return stdout, stderr, err, duration
