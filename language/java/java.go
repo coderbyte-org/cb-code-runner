@@ -9,7 +9,7 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
 	fname := filepath.Base(files[0])
 
-	stdout, stderr, err, duration := cmd.Run(workDir, "javac", fname)
+	stdout, stderr, err, duration := cmd.Run(workDir, "javac", "-Xlint:unchecked", fname)
 	if err != nil || stderr != "" {
 		return stdout, stderr, err, duration
 	}
