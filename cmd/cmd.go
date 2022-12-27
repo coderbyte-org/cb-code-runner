@@ -67,8 +67,8 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 	} else {
 		// do not return a stdout string longer than N characters
 		stdoutReturnString = stdout.String()
-		if (len(stdoutReturnString) > 4000) {
-			stdoutReturnString = stdoutReturnString[0:4000]
+		if (len(stdoutReturnString) > 20000) {
+			stdoutReturnString = stdoutReturnString[0:20000]
 		} 
 	}
 
