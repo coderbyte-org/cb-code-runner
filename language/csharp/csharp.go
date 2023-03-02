@@ -22,7 +22,6 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	srcFile, err := os.Open(oldLocation)
 	destFile, err := os.Create(newLocation)
 	_, err = io.Copy(destFile, srcFile)
-	err = destFile.Sync()
 	
 	args := append([]string{"mcs", "-r:Newtonsoft.Json.dll", "-out:" + binName}, sourceFiles...)
 
