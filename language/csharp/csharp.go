@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"io"
 	"os"
-	"fmt"
 )
 
 func Run(files []string, stdin string) (string, string, error, string) {
