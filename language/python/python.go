@@ -3,6 +3,7 @@ package python
 import (
 	"github.com/coderbyte-org/cb-code-runner/cmd"
 	"path/filepath"
+	"strings"
 )
 
 func Run(files []string, stdin string) (string, string, error, string) {
