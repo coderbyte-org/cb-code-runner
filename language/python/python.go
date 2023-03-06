@@ -8,7 +8,7 @@ import (
 
 func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
-	stdout, stderr, err, duration = cmd.RunStdin(workDir, stdin, "python", files[0])
+	stdout, stderr, err, duration := cmd.RunStdin(workDir, stdin, "python", files[0])
 
 	// remove pyspark warnings
 	stdout = strings.Replace(stdout, "WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable\n", "", -1)
