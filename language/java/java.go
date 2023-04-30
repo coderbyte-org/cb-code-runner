@@ -10,6 +10,7 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	fname := filepath.Base(files[0])
 
 	// need to include junit into classpath env variable
+	// https://github.com/junit-team/junit4/wiki/Getting-started
 	junitIncludeString := ".:/usr/local/bin/JUNIT/junit-4.13.2.jar:/usr/local/bin/JUNIT/hamcrest-core-1.3.jar"
 	stdout, stderr, err, duration := cmd.Run(workDir, "javac", "-Xlint:unchecked", "-cp", junitIncludeString, fname)
 		
