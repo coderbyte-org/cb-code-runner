@@ -10,7 +10,8 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
 	fname := filepath.Base(files[0])
 
-	stdout, stderr, err, duration := cmd.Run(workDir, "kotlinc", fname, "-progressive", "-no-reflect")
+	// https://discuss.kotlinlang.org/t/kotlinc-example-with-separate-files/3389/4
+	stdout, stderr, err, duration := cmd.Run(workDir, "kotlinc", "*.kt", "-progressive", "-no-reflect")
 
 	// remove java warning
 	stderr = strings.Replace(stderr, "Java HotSpot(TM) 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release.\n", "", -1)
