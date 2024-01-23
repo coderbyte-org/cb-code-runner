@@ -50,6 +50,7 @@ The output will be a JSON payload with the following parameters: `stdout`, `stde
 ```
 
 ## Languages Supported
+* Apex
 * Bash
 * C
 * C++
