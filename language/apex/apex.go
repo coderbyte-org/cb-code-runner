@@ -13,7 +13,7 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	// https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm
 	stdout, stderr, err, duration := cmd.Run(workDir, "sf", "org", "login", "jwt", "--client-id", os.Getenv("CONSUMER_ID_SALESFORCE"), "--jwt-key-file", "/usr/local/bin/JWT/server.key", "--username", "support@coderbyte.com", "--alias", "my-hub-org", "--set-default-dev-hub")
 		
-	if err != nil || stderr != "" {
+	if err != nil {
 		return stdout, stderr, err, duration
 	}
 
