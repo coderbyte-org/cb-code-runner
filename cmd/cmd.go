@@ -42,7 +42,7 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 		done <- cmd.Wait()
 	}()
 	select {
-	case <-time.After(20 * time.Second):
+	case <-time.After(30 * time.Second):
 		err := cmd.Process.Kill()
 		if err != nil {
 			log.Println("2. failed to kill process\n", err.Error())
