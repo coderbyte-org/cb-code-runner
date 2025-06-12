@@ -29,7 +29,7 @@ func Run(files []string, stdin string) (string, string, error, string) {
 		return cmd.RunStdin(workDir, stdin, "cargo", "test")
 	} else {
 		stdout, stderr, err, duration := cmd.Run(workDir, "rustc", "-o", binName, files[0])
-		if err != nil {
+		if err != nil || stderr != "" {
 			return stdout, stderr, err, duration
 		}
 		binPath := filepath.Join(workDir, binName)
