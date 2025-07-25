@@ -21,13 +21,20 @@ func Run(files []string, stdin string) (string, string, error, string) {
 		compileCommand = append(compileCommand, strings.ReplaceAll(files[i], workDir + "/", ""))
 	}
 
-	stdout, stderr, err, duration := cmd.Run(workDir, compileCommand...)
+	compileStdout, compileStderr, compileErr, duration := cmd.Run(workDir, compileCommand...)
 
-	if err != nil || stderr != "" {
-		return stdout, stderr, err, duration
+	// only block if there's a true compilation error (i.e. kotlinc exited non-zero AND no class was produced)
+	if compileErr != nil {
+		return compileStdout, compileStderr, compileErr, duration
 	}
 
-	return cmd.RunStdin(workDir, stdin, "kotlin", "-cp", jarFileIncludes, className(fname))
+	// run the program regardless of warnings in compileStderr
+	runStdout, runStderr, runErr, _ := cmd.RunStdin(workDir, stdin, "kotlin", "-cp", jarFileIncludes, className(fname))
+
+	// combine compile-time warnings with runtime stderr
+	combinedStderr := strings.TrimSpace(compileStderr + "\n" + runStderr)
+
+	return runStdout, combinedStderr, runErr, duration
 }
 
 func className(fname string) string {

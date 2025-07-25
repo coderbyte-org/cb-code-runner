@@ -8,7 +8,7 @@ import (
 func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
 
-	args := append([]string{"scalac"}, files...)
+	args := append([]string{"scalac", "-deprecation"}, files...)
 	stdout, stderr, err, duration := cmd.Run(workDir, args...)
 	
 	if err != nil || stderr != "" {
