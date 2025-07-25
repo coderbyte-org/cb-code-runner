@@ -8,6 +8,7 @@ import (
 	"time"
 	"errors"
 	"strconv"
+	"syscall"
 )
 
 func Run(workDir string, args ...string) (string, string, error, string) {
@@ -51,8 +52,23 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 		log.Println("ERROR: process killed as timeout reached")
 	case err := <-done:
 		if err != nil {
-			log.Println("3. process finished with error\n", err.Error())
-			err = errors.New(err.Error())
+			// default error message
+			errMsg := err.Error()
+			if exitErr, ok := err.(*exec.ExitError); ok {
+				// only works on Unix systems
+				// added this code to get `segmentation fault` for C++
+				if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
+					if status.Signaled() {
+						sig := status.Signal()
+						errMsg = "terminated by signal: " + sig.String()
+						log.Printf("3. process finished due to signal: %s\n", sig.String())
+					} else {
+						log.Printf("3. process exited with code: %d\n", status.ExitStatus())
+					}
+				}
+			}
+			err = errors.New(errMsg)
+			return "", "", err, "1"
 		}
 	}
 
