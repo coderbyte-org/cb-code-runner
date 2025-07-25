@@ -56,7 +56,7 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 			errMsg := err.Error()
 			if exitErr, ok := err.(*exec.ExitError); ok {
 				// only works on Unix systems
-				// added this code to get `segmentation fault` for C++
+				// added this code to get `segmentation fault` for C++ to return
 				if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
 					if status.Signaled() {
 						sig := status.Signal()
@@ -68,7 +68,7 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 				}
 			}
 			err = errors.New(errMsg)
-			return "", "", err, "1"
+			return "", stderr.String(), err, "1"
 		}
 	}
 
