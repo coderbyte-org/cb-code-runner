@@ -52,6 +52,7 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 	case err := <-done:
 		if err != nil {
 			log.Println("3. process finished with error\n", err.Error())
+			err = err.Error()
 		}
 	}
 
