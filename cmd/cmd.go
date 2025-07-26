@@ -68,7 +68,7 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 				}
 			}
 			err = errors.New(errMsg)
-			return "", stderr.String(), err, "1"
+			return stdout.String(), stderr.String(), err, "1"
 		}
 	}
 
