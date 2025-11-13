@@ -10,7 +10,7 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	workDir := filepath.Dir(files[0])
 	runArgs := []string{"python", files[0]}
 
-	if cfgArgs := config.ParseCbConfig(files); cfgArgs != nil {
+	if cfgArgs := config.ParseCbConfigField(files, "run"); cfgArgs != nil {
 		runArgs = cfgArgs
 	}
 

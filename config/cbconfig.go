@@ -9,21 +9,20 @@ import (
 
 type CbConfig struct {
 	Run string `json:"run"`
+	Compile string `json:"compile"`
 }
 
-// ParseCbConfig locates ".cbconfig", reads it, parses JSON, and
-// returns a run command slice such as ["php", "main.php"].
-// Returns nil if missing or invalid.
-func ParseCbConfig(files []string) []string {
+// ParseCbConfigField looks for ".cbconfig" in files, and returns the
+// chosen field ("run" or "compile") as a []string, e.g. ["node", "main.js"].
+// Returns nil if the file doesn't exist, JSON is invalid, or the field is empty.
+func ParseCbConfigField(files []string, field string) []string {
 	var cfgPath string
-
 	for _, f := range files {
 		if filepath.Base(f) == ".cbconfig" {
 			cfgPath = f
 			break
 		}
 	}
-
 	if cfgPath == "" {
 		return nil
 	}
@@ -38,12 +37,22 @@ func ParseCbConfig(files []string) []string {
 		return nil
 	}
 
-	run := strings.TrimSpace(cfg.Run)
-	if run == "" {
+	var raw string
+	switch field {
+	case "run":
+		raw = cfg.Run
+	case "compile":
+		raw = cfg.Compile
+	default:
 		return nil
 	}
 
-	parts := strings.Fields(run)
+	raw = strings.TrimSpace(raw)
+	if raw == "" {
+		return nil
+	}
+
+	parts := strings.Fields(raw)
 	if len(parts) == 0 {
 		return nil
 	}
