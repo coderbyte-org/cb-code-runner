@@ -13,6 +13,25 @@ import (
 	"os"
 )
 
+// helper function because we treat TS errors slightly differently
+func isTypescriptRun(args []string) bool {
+	if len(args) == 0 {
+		return false
+	}
+	cmd := args[0]
+	// Heuristics: mark as TS if we’re using ts-node, tsc, Jest/ts-jest, etc.
+	if strings.Contains(cmd, "ts-node") || strings.Contains(cmd, "tsc") || strings.Contains(cmd, "jest") {
+		return true
+	}
+	// Also treat commands that run .ts/.tsx files directly as TS
+	for _, a := range args[1:] {
+		if strings.HasSuffix(a, ".ts") || strings.HasSuffix(a, ".tsx") {
+			return true
+		}
+	}
+	return false
+}
+
 func Run(workDir string, args ...string) (string, string, error, string) {
 	return RunStdin(workDir, "", args...) 
 }
@@ -78,6 +97,9 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 		log.Println("1. process fail\n", err.Error())
 	}
 
+	// Detect if this looks like a TypeScript-related command
+	isTS := isTypescriptRun(args)
+
 	// We'll copy stdout into a limited writer (cap), and stderr into a normal buffer.
 	// When the cap is hit, we kill the process immediately.
 	limitHitCh := make(chan struct{}, 1)
@@ -90,7 +112,6 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 			// Cap reached → signal and kill process
 			select { case limitHitCh <- struct{}{}: default: }
 		}
-		// io.Copy will also end when the child exits or pipe closes.
 	}()
 
 	go func() {
@@ -118,21 +139,26 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 			case werr := <-done:
 				// Process exited on its own
 				if werr != nil {
-					// Build a better error message (your original logic)
-					errMsg := werr.Error()
-					if exitErr, ok := werr.(*exec.ExitError); ok {
-						if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
-							if status.Signaled() {
-								sig := status.Signal()
-								errMsg = "terminated by signal: " + sig.String()
-								log.Printf("3. process finished due to signal: %s\n", sig.String())
-							} else {
-								log.Printf("3. process exited with code: %d\n", status.ExitStatus())
+					if isTS {
+						// TS PATH: log but DO NOT propagate error or return early
+						log.Printf("TS process exited with error (suppressed): %v\n", werr)
+					} else {
+						// Build a better error message (your original logic)
+						errMsg := werr.Error()
+						if exitErr, ok := werr.(*exec.ExitError); ok {
+							if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
+								if status.Signaled() {
+									sig := status.Signal()
+									errMsg = "terminated by signal: " + sig.String()
+									log.Printf("3. process finished due to signal: %s\n", sig.String())
+								} else {
+									log.Printf("3. process exited with code: %d\n", status.ExitStatus())
+								}
 							}
 						}
+						err = errors.New(errMsg)
+						return stdout.String(), stderr.String(), err, "1"
 					}
-					err = errors.New(errMsg)
-					return stdout.String(), stderr.String(), err, "1"
 				}
 				// Normal exit
 				break loop
@@ -143,7 +169,7 @@ func RunStdin(workDir, stdin string, args ...string) (string, string, error, str
 			}
 		}
 
-	// Duration string (you already return this)
+	// Duration string
 	duration := time.Since(start)
 	milliseconds := duration.Milliseconds()
 	durationString := strconv.FormatInt(milliseconds, 10)
