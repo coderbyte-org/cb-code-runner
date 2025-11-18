@@ -1,6 +1,7 @@
 package cpp
 
 import (
+	"github.com/coderbyte-org/cb-code-runner/config"
 	"github.com/coderbyte-org/cb-code-runner/cmd"
 	"github.com/coderbyte-org/cb-code-runner/util"
 	"path/filepath"
@@ -54,15 +55,43 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	binName := "a.out"
 
 	sourceFiles := util.FilterByExtension(files, "cpp")
-	args := append([]string{"clang++", "-std=c++20", "-g", "-no-pie", "-fno-pie", "-O0", "-o", binName}, sourceFiles...)
-	stdout, stderr, err, duration := cmd.Run(workDir, args...)
+
+	// Default compile command:
+	compileArgs := append([]string{"clang++", "-std=c++20", "-g", "-no-pie", "-fno-pie", "-O0", "-o", binName}, sourceFiles...)
+
+	// If .cbconfig has "compile", use it instead, with support for ENV_SOURCE_FILES
+	if cfgCompile := config.ParseCbConfigField(files, "compile"); cfgCompile != nil {
+		var expanded []string
+		for _, part := range cfgCompile {
+			if part == "ENV_SOURCE_FILES" {
+				expanded = append(expanded, sourceFiles...)
+			} else {
+				expanded = append(expanded, part)
+			}
+		}
+		// If there is no ENV_SOURCE_FILES in the config, we assume the user
+		// fully specified the sources themselves and we do NOT auto-append.
+		compileArgs = expanded
+	}
+
+	stdout, stderr, err, duration := cmd.Run(workDir, compileArgs...)
 	if err != nil || stderr != "" {
 		return stdout, stderr, err, duration
 	}
 
 	// compilation succeeded, now run binary
 	binPath := filepath.Join(workDir, binName)
-	stdout, stderr, err, duration = cmd.RunStdin(workDir, stdin, binPath)
+
+	// Default run: execute the compiled binary directly
+	runArgs := []string{binPath}
+
+	// Allow override via .cbconfig "run"
+	// e.g. "run": "./a.out" or "run": "valgrind ./a.out"
+	if cfgRun := config.ParseCbConfigField(files, "run"); cfgRun != nil {
+		runArgs = cfgRun
+	}
+
+	stdout, stderr, err, duration = cmd.RunStdin(workDir, stdin, runArgs...)
 	
 	if err != nil || stderr != "" {
 		stderr = EnhanceStackTrace(stderr, binPath)
