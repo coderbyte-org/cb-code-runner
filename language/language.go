@@ -20,6 +20,7 @@ import (
 	"github.com/coderbyte-org/cb-code-runner/language/rust"
 	"github.com/coderbyte-org/cb-code-runner/language/dart"
 	"github.com/coderbyte-org/cb-code-runner/language/r"
+	"github.com/coderbyte-org/cb-code-runner/language/erlang"
 	"github.com/coderbyte-org/cb-code-runner/language/apex"
 	"github.com/coderbyte-org/cb-code-runner/language/verilog"
 )
@@ -46,6 +47,7 @@ var languages = map[string]runFn{
 	"rust":         rust.Run,
 	"dart":         dart.Run,
 	"r":         		r.Run,
+	"erlang":       erlang.Run,
 	"apex":       	apex.Run,
 	"verilog":      verilog.Run,
 }

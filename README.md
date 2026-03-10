@@ -58,6 +58,7 @@ The output will be a JSON payload with the following parameters: `stdout`, `stde
 * Clojure
 * Dart
 * Elixir
+* Erlang
 * Go
 * Java
 * JavaScript
