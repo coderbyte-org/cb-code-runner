@@ -57,7 +57,7 @@ func Run(files []string, stdin string) (string, string, error, string) {
 	sourceFiles := util.FilterByExtension(files, "cpp")
 
 	// Default compile command:
-	compileArgs := append([]string{"clang++", "-std=c++20", "-g", "-no-pie", "-fno-pie", "-O0", "-o", binName}, sourceFiles...)
+	compileArgs := append([]string{"clang++", "-std=c++20", "-g", "-no-pie", "-fno-pie", "-O0", "-pthread", "-o", binName}, sourceFiles...)
 
 	// If .cbconfig has "compile", use it instead, with support for ENV_SOURCE_FILES
 	if cfgCompile := config.ParseCbConfigField(files, "compile"); cfgCompile != nil {
