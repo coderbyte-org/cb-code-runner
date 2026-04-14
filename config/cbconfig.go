@@ -59,3 +59,39 @@ func ParseCbConfigField(files []string, field string) []string {
 
 	return parts
 }
+
+// for languages/runners that need the raw shell command.
+func ParseCbConfigFieldRaw(files []string, field string) string {
+	var cfgPath string
+	for _, f := range files {
+		if filepath.Base(f) == ".cbconfig" {
+			cfgPath = f
+			break
+		}
+	}
+	if cfgPath == "" {
+		return ""
+	}
+
+	data, err := os.ReadFile(cfgPath)
+	if err != nil {
+		return ""
+	}
+
+	var cfg CbConfig
+	if err := json.Unmarshal(data, &cfg); err != nil {
+		return ""
+	}
+
+	var raw string
+	switch field {
+	case "run":
+		raw = cfg.Run
+	case "compile":
+		raw = cfg.Compile
+	default:
+		return ""
+	}
+
+	return strings.TrimSpace(raw)
+}
